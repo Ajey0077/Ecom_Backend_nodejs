@@ -14,23 +14,15 @@ const connectDB = async () => {
     password: DB_PASSWORD,
     port: 5432,
   });
-  console.log("connect :", DB_NAME);
 
   try {
     await client.connect();
-    console.log("DB_NAME:", DB_NAME);
 
-    console.log("🚀 ~ file: dbConnect.js:24 ~ connectAndCreateDatabase ~ res:");
     const res = await client.query(
       `SELECT datname FROM pg_catalog.pg_database WHERE datname = '${DB_NAME}'`
     );
-    console.log(
-      "🚀 ~ file: dbConnect.js:25 ~ connectAndCreateDatabase ~ res:",
-      res
-    );
 
     if (res.rowCount === 0) {
-      console.log(`${DB_NAME} database not found, creating it.`);
       await client.query(`CREATE DATABASE "${DB_NAME}";`);
       console.log(`created database ${DB_NAME}`);
     } else {

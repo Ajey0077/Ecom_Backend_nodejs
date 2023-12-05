@@ -20,6 +20,11 @@ module.exports = (pool) => {
         filter = "all",
       } = req.query;
 
+      console.log(
+        "🚀 ~ file: product.js:21 ~ router.get ~ filter:",
+        searchText,
+        filter
+      );
       const page_limit = limit || 10;
       const page_number = parseInt(page);
 
@@ -34,9 +39,9 @@ module.exports = (pool) => {
       let values;
       const filter_key = filter.toLowerCase();
 
-      if (filter_key === "all") {
+      if (!filter || filter_key === "all") {
         totalCountQuery =
-          "SELECT COUNT(*) FROM products WHERE LOWER(id::TEXT || title || category) LIKE $1";
+          "SELECT COUNT(*) FROM products WHERE LOWER(id::TEXT || title || category::TEXT) LIKE $1";
         fetchProductsQuery = `
           SELECT * FROM products
           WHERE LOWER(id::TEXT || title || category || description || price::TEXT || discount_percentage::TEXT || rating::TEXT || brand || category) LIKE $1
@@ -62,10 +67,10 @@ module.exports = (pool) => {
           return res.status(400).json({ error: "Invalid filter provided" });
         }
 
-        totalCountQuery = `SELECT COUNT(*) FROM products WHERE ${filter_key} LIKE $1`;
+        totalCountQuery = `SELECT COUNT(*) FROM products WHERE ${filter_key}::TEXT LIKE $1`;
         fetchProductsQuery = `
           SELECT * FROM products
-          WHERE ${filter_key} LIKE $1
+          WHERE ${filter_key}::TEXT LIKE $1
           ORDER BY id
           LIMIT $2 OFFSET $3;
         `;

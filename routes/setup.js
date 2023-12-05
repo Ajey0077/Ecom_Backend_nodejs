@@ -29,16 +29,6 @@ const insertDataRoute = (pool) => {
         databaseName
       );
 
-      // // Check if the database already exists
-      // const existsQuery = `SELECT 1 FROM pg_database WHERE datname = $1`;
-      // const existsValues = [databaseName];
-      // const databaseExists = await pool.query(existsQuery, existsValues);
-      // console.log("data ", databaseExists);
-
-      // const res = await pool.query(
-      //   `SELECT datname FROM pg_catalog.pg_database WHERE datname = '${databaseName}'`
-      // );
-
       if (1 || res.rowCount === 0) {
         console.log(`${databaseName} database not found, creating it.`);
         await pool.query(`CREATE DATABASE "${databaseName}";`);
@@ -71,7 +61,6 @@ const insertDataRoute = (pool) => {
 
     try {
       const response = await axios.get(url);
-      console.log("@@ ", response.data);
       const data = await response.data;
 
       // Create the 'products' table if it doesn't exist
