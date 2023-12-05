@@ -8,14 +8,24 @@ dotenv.config();
 // connectDB();
 
 const app = express();
+
 const PORT = process.env.PORT || 5000;
+const DB_NAME = process.env.DB_NAME || "db123";
+const DB_USER = process.env.DB_USER || "com211";
+const DB_HOST = process.env.DB_HOST || "localhost";
+const DB_PASSWORD = process.env.DB_PASSWORD || "root";
+const DB_PORT = process.env.DB_PORT || 5432;
 
 const pool = new Pool({
-  user: "com211",
-  host: "localhost",
-  database: "db123",
-  password: "asdfghjk",
+  database: DB_NAME,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
   port: 5432,
+  connectionString: process.env.DBConfigLink,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 app.use(cors());

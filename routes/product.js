@@ -20,11 +20,6 @@ module.exports = (pool) => {
         filter = "all",
       } = req.query;
 
-      console.log(
-        "🚀 ~ file: product.js:21 ~ router.get ~ filter:",
-        searchText,
-        filter
-      );
       const page_limit = limit || 10;
       const page_number = parseInt(page);
 
