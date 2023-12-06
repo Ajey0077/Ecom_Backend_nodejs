@@ -31,13 +31,14 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
-app.use("/", (req, res) => {
-  res.status(200).send("Server is running");
-});
-
 app.use("/api/db", require("./routes/setup")(pool));
 
 app.use("/api/products", require("./routes/product")(pool));
+
+app.use("/", (req, res, next) => {
+  res.status(200).send("Server is running");
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
