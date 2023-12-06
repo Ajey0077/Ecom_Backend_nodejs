@@ -31,6 +31,10 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
+app.use("/", (req, res) => {
+  res.status(200).send("Server is running");
+});
+
 app.use("/api/db", require("./routes/setup")(pool));
 
 app.use("/api/products", require("./routes/product")(pool));
