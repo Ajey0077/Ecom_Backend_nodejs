@@ -104,9 +104,14 @@ module.exports = (pool) => {
     try {
       const productId = req.params.id;
       const selectProductQuery = "SELECT * FROM products WHERE id = $1";
+
       const { rows } = await pool.query(selectProductQuery, [productId]);
 
-      res.json(rows);
+      if (rows[0]) {
+        res.json(rows[0]);
+      } else {
+        res.status(404).json({ error: "Product not found" });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
